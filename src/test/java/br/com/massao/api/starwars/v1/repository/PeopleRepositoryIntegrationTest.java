@@ -1,7 +1,6 @@
 package br.com.massao.api.starwars.v1.repository;
 
 
-import br.com.massao.api.starwars.exception.NotFoundException;
 import br.com.massao.api.starwars.model.PersonModel;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,7 +15,6 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.anyLong;
 
 
 /**
@@ -45,8 +43,8 @@ class PeopleRepositoryIntegrationTest {
         // given
         peopleRepository.deleteAll();
 
-        PersonModel person1 = PersonModel.builder().birth_year("XFDFD").gender("male").height(123).homeworld("terra").mass(50).name("person1").build();
-        PersonModel person2 = PersonModel.builder().birth_year("11111").gender("female").height(123).homeworld("terra").mass(100).name("PERSON2").build();
+        PersonModel person1 = PersonModel.builder().birthYear("XFDFD").gender("male").height(123).homeworld("terra").mass(50).name("person1").build();
+        PersonModel person2 = PersonModel.builder().birthYear("11111").gender("female").height(123).homeworld("terra").mass(100).name("PERSON2").build();
 
         PersonModel person1Persisted = entityManager.persist(person1);
         PersonModel person2Persisted = entityManager.persist(person2);
@@ -69,8 +67,8 @@ class PeopleRepositoryIntegrationTest {
         // given
         peopleRepository.deleteAll();
 
-        PersonModel person1 = PersonModel.builder().birth_year("XFDFD").gender("male").height(123).homeworld("terra").mass(50).name("person1").build();
-        PersonModel person2 = PersonModel.builder().birth_year("11111").gender("female").height(123).homeworld("terra").mass(100).name("PERSON2").build();
+        PersonModel person1 = PersonModel.builder().birthYear("XFDFD").gender("male").height(123).homeworld("terra").mass(50).name("person1").build();
+        PersonModel person2 = PersonModel.builder().birthYear("11111").gender("female").height(123).homeworld("terra").mass(100).name("PERSON2").build();
 
         Long idGenerated1 = (Long) entityManager.persistAndGetId(person1);
         entityManager.flush();
@@ -79,21 +77,22 @@ class PeopleRepositoryIntegrationTest {
         Optional<PersonModel> personFound = peopleRepository.findById(idGenerated1);
 
         // then
-        assertThat(personFound.isPresent()).isTrue();
+        assertThat(personFound).isPresent();
         assertThat(personFound.get().getId()).isEqualTo(idGenerated1);
     }
 
     @Test
     void givenPersonWhenCreateThenSave() {
         // given
-        PersonModel person1 = PersonModel.builder().birth_year("XFDFD").gender("male").height(123).homeworld("terra").mass(50).name("person1").build();
+        PersonModel person1 = PersonModel.builder().birthYear("XFDFD").gender("male").height(123).homeworld("terra").mass(50).name("person1").build();
 
         // when
         PersonModel personFound = peopleRepository.saveAndFlush(person1);
 
         // then
-        assertThat(personFound).isNotNull();
-        assertThat(personFound).isEqualTo(person1);
+        assertThat(personFound)
+                .isNotNull()
+                .isEqualTo(person1);
     }
 
     @Test
@@ -112,8 +111,8 @@ class PeopleRepositoryIntegrationTest {
         // given
         peopleRepository.deleteAll();
 
-        PersonModel person1 = PersonModel.builder().birth_year("XFDFD").gender("male").height(123).homeworld("terra").mass(50).name("person1").build();
-        PersonModel person2 = PersonModel.builder().birth_year("11111").gender("female").height(123).homeworld("terra").mass(100).name("PERSON2").build();
+        PersonModel person1 = PersonModel.builder().birthYear("XFDFD").gender("male").height(123).homeworld("terra").mass(50).name("person1").build();
+        PersonModel person2 = PersonModel.builder().birthYear("11111").gender("female").height(123).homeworld("terra").mass(100).name("PERSON2").build();
 
         Long idGenerated1 = (Long) entityManager.persistAndGetId(person1);
         Long idGenerated2 = (Long) entityManager.persistAndGetId(person2);
@@ -124,7 +123,7 @@ class PeopleRepositoryIntegrationTest {
         peopleRepository.deleteById(idGenerated1);
 
         // then
-        assertThat(peopleRepository.findById(idGenerated1).isPresent()).isFalse();
+        assertThat(peopleRepository.findById(idGenerated1)).isNotPresent();
         assertThat(peopleRepository.count()).isEqualTo(totalOfRecords - 1);
     }
 
@@ -146,8 +145,8 @@ class PeopleRepositoryIntegrationTest {
         // given
         peopleRepository.deleteAll();
 
-        PersonModel person1 = PersonModel.builder().birth_year("XFDFD").gender("male").height(123).homeworld("terra").mass(50).name("person1").build();
-        PersonModel person2 = PersonModel.builder().birth_year("11111").gender("female").height(123).homeworld("terra").mass(100).name("PERSON2").build();
+        PersonModel person1 = PersonModel.builder().birthYear("XFDFD").gender("male").height(123).homeworld("terra").mass(50).name("person1").build();
+        PersonModel person2 = PersonModel.builder().birthYear("11111").gender("female").height(123).homeworld("terra").mass(100).name("PERSON2").build();
 
         Long idGenerated1 = (Long) entityManager.persistAndGetId(person1);
         entityManager.flush();
@@ -159,7 +158,7 @@ class PeopleRepositoryIntegrationTest {
         person.setMass(person2.getMass());
         person.setHeight(person2.getHeight());
         person.setGender(person2.getGender());
-        person.setBirth_year(person2.getBirth_year());
+        person.setBirthYear(person2.getBirthYear());
 
         peopleRepository.save(person);
 
@@ -172,7 +171,7 @@ class PeopleRepositoryIntegrationTest {
         assertThat(model.getMass()).isEqualTo(person2.getMass());
         assertThat(model.getHeight()).isEqualTo(person2.getHeight());
         assertThat(model.getGender()).isEqualTo(person2.getGender());
-        assertThat(model.getBirth_year()).isEqualTo(person2.getBirth_year());
+        assertThat(model.getBirthYear()).isEqualTo(person2.getBirthYear());
     }
 
 }

@@ -52,8 +52,8 @@ class PeopleServiceImplTest {
     @Test
     void givenPeopleWhenListThenReturnPeople() {
         // given
-        PersonModel person1 = PersonModel.builder().id(1L).birth_year("XFDFD").gender("male").height(123).homeworld("terra").mass(50).name("person1").build();
-        PersonModel person2 = PersonModel.builder().id(2L).birth_year("11111").gender("female").height(123).homeworld("terra").mass(100).name("PERSON2").build();
+        PersonModel person1 = PersonModel.builder().id(1L).birthYear("XFDFD").gender("male").height(123).homeworld("terra").mass(50).name("person1").build();
+        PersonModel person2 = PersonModel.builder().id(2L).birthYear("11111").gender("female").height(123).homeworld("terra").mass(100).name("PERSON2").build();
         List<PersonModel> peopleModel = Arrays.asList(person1, person2);
 
         // prepares mock
@@ -83,7 +83,7 @@ class PeopleServiceImplTest {
 
         // then
         assertThat(peopleResult).isNotNull();
-        assertThat(peopleResult.size()).isEqualTo(0);
+        assertThat(peopleResult.size()).isZero();
     }
 
 
@@ -94,7 +94,7 @@ class PeopleServiceImplTest {
     @Test
     void givenPersonWhenFindByIdThenReturnPerson() throws NotFoundException {
         // given
-        PersonModel person1 = PersonModel.builder().id(1L).birth_year("XFDFD").gender("male").height(123).homeworld("terra").mass(50).name("person1").build();
+        PersonModel person1 = PersonModel.builder().id(1L).birthYear("XFDFD").gender("male").height(123).homeworld("terra").mass(50).name("person1").build();
 
         // prepares mock
         Mockito.when(peopleRepository.findById(person1.getId())).thenReturn(Optional.of(person1));
@@ -103,7 +103,7 @@ class PeopleServiceImplTest {
         Optional<PersonModel> peopleResult = peopleService.findById(person1.getId());
 
         // then
-        assertThat(peopleResult.isPresent()).isTrue();
+        assertThat(peopleResult).isPresent();
         assertThat(peopleResult.get()).isEqualTo(person1);
     }
 
@@ -126,7 +126,7 @@ class PeopleServiceImplTest {
     @Test
     void givenPersonWhenCreateThenReturnPerson() {
         // given
-        PersonModel person1 = PersonModel.builder().id(1L).birth_year("XFDFD").gender("male").height(123).homeworld("terra").mass(50).name("person1").build();
+        PersonModel person1 = PersonModel.builder().id(1L).birthYear("XFDFD").gender("male").height(123).homeworld("terra").mass(50).name("person1").build();
 
         // prepares mock
         Mockito.when(peopleRepository.save(person1)).thenReturn(person1);
@@ -135,8 +135,9 @@ class PeopleServiceImplTest {
         PersonModel personResult = peopleService.save(person1);
 
         // then
-        assertThat(personResult).isNotNull();
-        assertThat(personResult).isEqualTo(person1);
+        assertThat(personResult)
+                .isNotNull()
+                .isEqualTo(person1);
     }
 
     @Test
@@ -157,7 +158,7 @@ class PeopleServiceImplTest {
     // TODO - melhorar manipulacao de erro - quando invalido, excecao ou null lancar excecao
     void givenInvalidHomeworldInPersonWhenCreateThenThrowsIllegalArgumentException() {
         // given
-        PersonModel person1 = PersonModel.builder().id(1L).birth_year("XFDFD").gender("male").height(123).homeworld("terra").mass(50).name("person1").build();
+        PersonModel person1 = PersonModel.builder().id(1L).birthYear("XFDFD").gender("male").height(123).homeworld("terra").mass(50).name("person1").build();
 
         // prepares mock
         Mockito.when(planetsService.existsPlanetByName(any())).thenReturn(false);
@@ -176,7 +177,7 @@ class PeopleServiceImplTest {
     @Test
     void givenPersonWhenDeleteByIdThenDelete() throws NotFoundException {
         // given
-        PersonModel person1 = PersonModel.builder().id(1L).birth_year("XFDFD").gender("male").height(123).homeworld("terra").mass(50).name("person1").build();
+        PersonModel person1 = PersonModel.builder().id(1L).birthYear("XFDFD").gender("male").height(123).homeworld("terra").mass(50).name("person1").build();
 
         // prepares mock
         Mockito.doNothing().when(peopleRepository).deleteById(person1.getId());
@@ -207,7 +208,7 @@ class PeopleServiceImplTest {
     @Test
     void givenPersonWhenModifyThenModify() throws NotFoundException {
         // given
-        PersonModel person1 = PersonModel.builder().id(1L).birth_year("XFDFD").gender("male").height(123).homeworld("terra").mass(50).name("person1").build();
+        PersonModel person1 = PersonModel.builder().id(1L).birthYear("XFDFD").gender("male").height(123).homeworld("terra").mass(50).name("person1").build();
 
         // prepares mock
         Mockito.when(peopleRepository.findById(any())).thenReturn(Optional.of(person1));
@@ -249,7 +250,7 @@ class PeopleServiceImplTest {
     void givenInvalidHomeworldInPersonWhenModifyThenThrowsIllegalArgumentException() {
         // given
         // prepares mock
-        PersonModel person1 = PersonModel.builder().id(1L).birth_year("XFDFD").gender("male").height(123).homeworld("terra").mass(50).name("person1").build();
+        PersonModel person1 = PersonModel.builder().id(1L).birthYear("XFDFD").gender("male").height(123).homeworld("terra").mass(50).name("person1").build();
         person1.setHomeworld("");
         Mockito.when(peopleRepository.findById(any())).thenReturn(Optional.of(person1));
 

@@ -33,7 +33,7 @@ public class ProfileModel implements GrantedAuthority {
 
 	@Override
 	public String getAuthority() {
-		return name;
+		return getName();
 	}
 	
 }
